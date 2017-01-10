@@ -4,9 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:livechart2"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="System Stats" Height="320" Width="480" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="lvc:AngularGauge">
+            <Setter Property="NeedleFill" Value="#00688B"></Setter>
+            <Setter Property="SectionsInnerRadius" Value=".6"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Grid.Column="0">
+            <Label DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="24"> CPU </Label>
+            <lvc:AngularGauge Name="_cpuDial" Margin="10, 10, 20, 0">
+                <lvc:AngularGauge.Sections>
+                    <lvc:AngularSection FromValue="0" ToValue="100"   Fill="#E0EEEE"></lvc:AngularSection>
+                </lvc:AngularGauge.Sections>
+            </lvc:AngularGauge>
+        </DockPanel>
+        <DockPanel Grid.Row="0" Grid.Column="1">
+            <Label DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="24">RAM</Label>
+            <lvc:AngularGauge Name="_ramDial" Margin="20,10,10,0">
+                <lvc:AngularGauge.Sections>
+                    <lvc:AngularSection FromValue="0" ToValue="100"   Fill="#E0EEEE"></lvc:AngularSection>
+                </lvc:AngularGauge.Sections>
+            </lvc:AngularGauge>
+        </DockPanel>
     </Grid>
 </Window>
