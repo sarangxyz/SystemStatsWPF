@@ -200,18 +200,21 @@ namespace livechart2
         private static Action EmptyDelegate = delegate () { };
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            CPU.Update();
-            RAM.Update();
-            this.Dispatcher.Invoke(() =>
+            lock (this)
             {
-                var cpuVal = Clamp(CPU.CPU, 0.0, 100.0);
-                var ramVal = Clamp(RAM.Memory, 0.0, 100.0);
-                _cpuDial.Value = cpuVal;
-                _ramDial.Value = ramVal;
+                CPU.Update();
+                RAM.Update();
+                this.Dispatcher.Invoke(() =>
+                {
+                    var cpuVal = Clamp(CPU.CPU, 0.0, 100.0);
+                    var ramVal = Clamp(RAM.Memory, 0.0, 100.0);
+                    _cpuDial.Value = cpuVal;
+                    _ramDial.Value = ramVal;
 
-                _cpuLabel.Content = string.Format("CPU {0} %", cpuVal.ToString("N2"));
-                _ramLabel.Content = string.Format("RAM {0}/{1} GB", ToGBFromMBytes(RAM.UsedBytes).ToString("N2"), ToGBFromMBytes(RAM.TotalBytes).ToString("N2"));
-            });            
+                    _cpuLabel.Content = string.Format("CPU {0} %", cpuVal.ToString("N2"));
+                    _ramLabel.Content = string.Format("RAM {0}/{1} GB", ToGBFromMBytes(RAM.UsedBytes).ToString("N2"), ToGBFromMBytes(RAM.TotalBytes).ToString("N2"));
+                });
+            }       
         }
     }
 }
