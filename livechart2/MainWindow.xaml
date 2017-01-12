@@ -22,16 +22,16 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Grid.Column="0">
-            <Label DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="24"> CPU </Label>
-            <lvc:AngularGauge Name="_cpuDial" Margin="10, 10, 20, 0">
+            <Label Name="_cpuLabel" DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="16"> CPU </Label>
+            <lvc:AngularGauge Name="_cpuDial" Margin="20, 10, 10, 0">
                 <lvc:AngularGauge.Sections>
                     <lvc:AngularSection FromValue="0" ToValue="100"   Fill="#E0EEEE"></lvc:AngularSection>
                 </lvc:AngularGauge.Sections>
             </lvc:AngularGauge>
         </DockPanel>
         <DockPanel Grid.Row="0" Grid.Column="1">
-            <Label DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="24">RAM</Label>
-            <lvc:AngularGauge Name="_ramDial" Margin="20,10,10,0">
+            <Label Name="_ramLabel" DockPanel.Dock="Bottom" Margin="10" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="16">RAM</Label>
+            <lvc:AngularGauge Name="_ramDial" Margin="10,10,20,0">
                 <lvc:AngularGauge.Sections>
                     <lvc:AngularSection FromValue="0" ToValue="100"   Fill="#E0EEEE"></lvc:AngularSection>
                 </lvc:AngularGauge.Sections>

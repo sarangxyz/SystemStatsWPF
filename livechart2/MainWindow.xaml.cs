@@ -137,6 +137,9 @@ namespace livechart2
         private PerformanceCounter cpuCounter = new PerformanceCounter();
         public double Memory { get; private set; }
 
+        public Int64 UsedBytes { get; private set; }
+        public Int64 TotalBytes { get; private set; }
+
         public RAMUsage()
         {
             Update();
@@ -145,8 +148,10 @@ namespace livechart2
         public void Update()
         {
             Int64 phav = PerformanceInfo.GetPhysicalAvailableMemoryInMiB();
-            Int64 tot = PerformanceInfo.GetTotalMemoryInMiB();
-            double percentFree = (double)((decimal)phav / (decimal)tot) * 100.0;
+            TotalBytes = PerformanceInfo.GetTotalMemoryInMiB();
+            UsedBytes = TotalBytes - phav;
+
+            double percentFree = (double)((decimal)phav / (decimal)TotalBytes) * 100.0;
             double percentOccupied = 100.0 - percentFree;
             Memory = percentOccupied;
         }
@@ -160,6 +165,7 @@ namespace livechart2
         private CPUUsage CPU = new CPUUsage();
         private RAMUsage RAM = new RAMUsage();
         private Timer _timer = new Timer();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -177,6 +183,20 @@ namespace livechart2
             _timer.Dispose();
         }
 
+        private static double Clamp(double val, double min, double max)
+        {
+            if (val < min)
+                return min;
+            else if (val > max)
+                return max;
+            return val;
+        }
+
+        private double ToGBFromMBytes(Int64 bytes)
+        {
+            return (double)bytes / 1024.0;
+        }
+
         private static Action EmptyDelegate = delegate () { };
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -184,8 +204,13 @@ namespace livechart2
             RAM.Update();
             this.Dispatcher.Invoke(() =>
             {
-                _cpuDial.Value = CPU.CPU;
-                _ramDial.Value = RAM.Memory;
+                var cpuVal = Clamp(CPU.CPU, 0.0, 100.0);
+                var ramVal = Clamp(RAM.Memory, 0.0, 100.0);
+                _cpuDial.Value = cpuVal;
+                _ramDial.Value = ramVal;
+
+                _cpuLabel.Content = string.Format("CPU {0} %", cpuVal.ToString("N2"));
+                _ramLabel.Content = string.Format("RAM {0}/{1} GB", ToGBFromMBytes(RAM.UsedBytes).ToString("N2"), ToGBFromMBytes(RAM.TotalBytes).ToString("N2"));
             });            
         }
     }
