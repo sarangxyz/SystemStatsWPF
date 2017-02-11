@@ -5,20 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Runtime.InteropServices;
+using MahApps.Metro.Controls;
 
 using FILETIME = System.Runtime.InteropServices.FILETIME;
 using System.Windows.Threading;
+
 
 namespace livechart2
 {
@@ -28,7 +19,7 @@ namespace livechart2
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private CPUUsage CPU = new CPUUsage();
         private RAMUsage RAM = new RAMUsage();
@@ -89,6 +80,14 @@ namespace livechart2
                     _ramLabel.Content = string.Format("RAM {0}/{1} GB", ToGBFromMBytes(RAM.UsedBytes).ToString("N2"), ToGBFromMBytes(RAM.TotalBytes).ToString("N2"));
                 });
             }       
+        }
+
+        private void AboutBox_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            AboutBox dialog = new AboutBox();
+            dialog.Owner = this;
+            dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            dialog.ShowDialog();
         }
     }
 }
